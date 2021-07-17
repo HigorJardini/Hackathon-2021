@@ -16,7 +16,6 @@ class AuthController extends Controller
                                )
     {
         $this->user = $user;
-        $this->middleware('auth:api');
     }
 
     public function login(Request $request)
