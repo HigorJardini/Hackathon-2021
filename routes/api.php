@@ -25,6 +25,10 @@ Route::prefix('desktop')->group(function () {
             Route::post('register', 'App\Http\Controllers\Api\Desktop\AuthController@register')->name('.register');
         });
 
+        Route::prefix('denunciations')->name('denunciations')->group(function () {
+            Route::get('list', 'App\Http\Controllers\Api\Desktop\Denunciations\DenunciationsController@list')->name('.list');
+        });
+
     });
 
 });
