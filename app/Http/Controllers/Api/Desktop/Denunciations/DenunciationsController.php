@@ -19,8 +19,9 @@ class DenunciationsController extends Controller
     }
 
     public function list()
-    {
-        return response()->json($this->denunciationsService->list());
+    {   
+        $list = $this->denunciationsService->list();
+        return response()->json($list['return'], $list['http_code']);
     }
 
 }

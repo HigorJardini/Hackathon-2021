@@ -34,16 +34,28 @@ class DenunciationsService
                                                 ->get()
                                                 ->toArray();
             foreach($denunciations as $key => $denunciation){
-                $denunciations[$key]['status'] = $this->getStatus($denunciation['id']);
-            }
 
-            return $denunciations;
+                $get_status = $this->getStatus($denunciation['id']);
+
+                if($get_status['http_code'] == 200)
+                    $denunciations[$key]['status'] = $get_status['return'];
+                else
+                    return $get_status;
+            }
+            
+            return [
+                'http_code' => 200,
+                'return'   => $denunciations
+            ];
 
         } catch (\Throwable $th) {
 
             $this->logSystem->log_system_error(500, 'DenunciationsService/list()', $th);
             
-            return null;
+            return [
+                'http_code' => 500,
+                'return'   => ['message' => 'List denunciations error']
+            ];
         }
     }
 
@@ -55,13 +67,20 @@ class DenunciationsService
                                 ->leftJoin('status', 'status.id', '=', 'historical_status.status_id')
                                 ->orderBy('historical_status.id', 'DESC')
                                 ->first();
+            
+            return [
+                'http_code' => 200,
+                'return'    => $status->name
+            ];
 
-            return $status->name;   
         } catch (\Throwable $th) {
 
             $this->logSystem->log_system_error(500, 'DenunciationsService/getStatus()', $th);
 
-            return null;
+            return [
+                'http_code' => 500,
+                'return'   => ['message' => 'List denunciations getStatus() error']
+            ];
         }
 
     }

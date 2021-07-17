@@ -21,8 +21,10 @@ Route::prefix('desktop')->group(function () {
     Route::middleware(['auth:api'])->group(function () {
 
         Route::prefix('users')->name('users')->group(function () {
-            Route::get('list', 'App\Http\Controllers\Api\Desktop\Users\UsersController@list')->name('.list');
+            Route::get('list',      'App\Http\Controllers\Api\Desktop\Users\UsersController@list')->name('.list');
             Route::post('register', 'App\Http\Controllers\Api\Desktop\AuthController@register')->name('.register');
+            Route::put('situation', 'App\Http\Controllers\Api\Desktop\Users\UsersController@situationUser')->name('.situation');
+            Route::put('edit',      'App\Http\Controllers\Api\Desktop\Users\UsersController@editUser')->name('.edit');
         });
 
         Route::prefix('denunciations')->name('denunciations')->group(function () {
@@ -31,10 +33,6 @@ Route::prefix('desktop')->group(function () {
 
     });
 
-});
-
-Route::get('test', function () {
-    return response(['message' => 'Route'],200);
 });
 
 Route::fallback(function () {
