@@ -16,12 +16,15 @@ use Illuminate\Support\Facades\Route;
 
 Route::prefix('desktop')->group(function () {
 
-    Route::post('login', 'App\Http\Controllers\Api\LoginController@login')->name('login');
+    Route::post('login', 'App\Http\Controllers\Api\Desktop\AuthController@login')->name('login');
 
     Route::middleware(['auth:api'])->group(function () {
-        Route::get('/', function () {
-            // Uses first & second middleware...
+
+        Route::prefix('users')->name('users')->group(function () {
+            // Route::post('list', 'App\Http\Controllers\Api\Desktop\AuthController@register')->name('.index');
+            Route::post('register', 'App\Http\Controllers\Api\Desktop\AuthController@register')->name('.register');
         });
+
     });
-    
+
 });
