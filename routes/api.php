@@ -28,3 +28,11 @@ Route::prefix('desktop')->group(function () {
     });
 
 });
+
+Route::get('test', function () {
+    return response(['message' => 'Route'],200);
+});
+
+Route::fallback(function () {
+    return response(['message' => 'Route Not Found'],404);
+});
