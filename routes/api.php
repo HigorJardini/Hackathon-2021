@@ -14,8 +14,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
+Route::prefix('desktop')->group(function () {
 
-Route::post('login', 'App\Http\Controllers\Api\LoginController@login')->name('login');
+    Route::post('login', 'App\Http\Controllers\Api\LoginController@login')->name('login');
+
+    Route::middleware(['auth:api'])->group(function () {
+        Route::get('/', function () {
+            // Uses first & second middleware...
+        });
+    });
+    
+});

@@ -24,6 +24,7 @@ class CreateUsersTable extends Migration
             $table->string('chapa_number')->nullable();
             $table->boolean('active');
             $table->boolean('adm');
+            $table->rememberToken();
             $table->timestamps();
         });
     }

@@ -8,10 +8,13 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laratrust\Traits\LaratrustUserTrait;
 
+use Laravel\Passport\HasApiTokens;
+
+
 class User extends Authenticatable
 {
     use LaratrustUserTrait;
-    use HasFactory, Notifiable;
+    use HasFactory, Notifiable, HasApiTokens;
 
     /**
      * The attributes that are mass assignable.
@@ -22,6 +25,12 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'mother_name',
+        'birthdate',
+        'cpf',
+        'chapa_number',
+        'active',
+        'adm'
     ];
 
     /**
@@ -31,15 +40,7 @@ class User extends Authenticatable
      */
     protected $hidden = [
         'password',
-        'remember_token',
+        'remember_token'
     ];
-
-    /**
-     * The attributes that should be cast to native types.
-     *
-     * @var array
-     */
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-    ];
+   
 }
