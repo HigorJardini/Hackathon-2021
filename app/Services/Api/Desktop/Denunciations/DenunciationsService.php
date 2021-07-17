@@ -41,7 +41,7 @@ class DenunciationsService
 
         } catch (\Throwable $th) {
 
-            $this->logSystem->log_system_error(500, 'DenunciationsService/getStatus()', $th);
+            $this->logSystem->log_system_error(500, 'DenunciationsService/list()', $th);
             
             return null;
         }

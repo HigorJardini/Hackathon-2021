@@ -21,7 +21,7 @@ Route::prefix('desktop')->group(function () {
     Route::middleware(['auth:api'])->group(function () {
 
         Route::prefix('users')->name('users')->group(function () {
-            // Route::post('list', 'App\Http\Controllers\Api\Desktop\AuthController@register')->name('.index');
+            Route::get('list', 'App\Http\Controllers\Api\Desktop\Users\UsersController@list')->name('.list');
             Route::post('register', 'App\Http\Controllers\Api\Desktop\AuthController@register')->name('.register');
         });
 

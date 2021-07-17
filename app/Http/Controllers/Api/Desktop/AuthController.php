@@ -59,7 +59,8 @@ class AuthController extends Controller
             'name'     => 'required|max:255',
             'email'    => 'email|required|unique:users',
             'cpf'      => 'required|min:11|max:11|unique:users',
-            'password' => 'required|min:6'
+            'password' => 'required|min:6',
+            'chapa'    => 'required'
         ];
 
         $validator = $this->validator($request, $rules);
@@ -71,12 +72,13 @@ class AuthController extends Controller
         $by_passwd = bcrypt($request->password);
 
         $user = User::create([
-            'name'     => $request->name,
-            'email'    => $request->email,
-            'cpf'      => $request->cpf,
-            'password' => $by_passwd,
-            'active'   => 1,
-            'adm'      => 1
+            'name'         => $request->name,
+            'email'        => $request->email,
+            'cpf'          => $request->cpf,
+            'password'     => $by_passwd,
+            'chapa_number' => $request->chapa,
+            'active'       => 1,
+            'adm'          => 1
         ]);
 
         // $accessToken = $user->createToken('authToken')->accessToken;
