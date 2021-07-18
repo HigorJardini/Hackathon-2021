@@ -64,6 +64,19 @@ class DenunciationsService
                 ]; 
             }
 
+            $valid_type = $this->validDenuncitionType($request->neighborhood_id);
+
+            if($valid_type['http_code'] !== 200){
+
+                DB::rollBack();
+
+                return [
+                    'http_code' => $valid_type['http_code'],
+                    'return'   => $valid_type['return']
+                ]; 
+            }
+
+
             $phone = $this->phones->create([
                 'number' => $request->phone
             ]);
@@ -125,10 +138,10 @@ class DenunciationsService
     {
         try {
 
-            $type = $this->neighborhoods->where('id', $neighborhood_id)
+            $neighborhood = $this->neighborhoods->where('id', $neighborhood_id)
                                         ->first();
 
-            if($type != null){
+            if($neighborhood != null){
                 return [
                     'http_code' => 200,
                     'return'   => true
@@ -136,16 +149,16 @@ class DenunciationsService
             } else
                 return [
                     'http_code' => 400,
-                    'return'   => ['message' => 'Not found denunciation type']
+                    'return'   => ['message' => 'Not found neighborhood']
                 ];
 
         } catch (\Throwable $th) {
 
-            $this->logSystem->log_system_error(500, 'Mobile/DenunciationsService/validDenuncitionType()', $th);
+            $this->logSystem->log_system_error(500, 'Mobile/DenunciationsService/validNeighborhoods()', $th);
             
             return [
                 'http_code' => 500,
-                'return'   => ['message' => 'validDenuncitionType register error']
+                'return'   => ['message' => 'Neighborhood register error']
             ]; 
         }
     }

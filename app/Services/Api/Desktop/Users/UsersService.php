@@ -27,9 +27,10 @@ class UsersService
     {
         try {
 
-            $users = $this->users->select('id', 'chapa_number', 'name', 'email', 'active')
-                               ->get()
-                               ->toArray();
+            $users = $this->users->select('id', 'chapa_number', 'name', 'email', 'cpf', 'active')
+                                 ->where('adm', 1)
+                                 ->get()
+                                 ->toArray();
 
             return [
                 'http_code' => 200,
