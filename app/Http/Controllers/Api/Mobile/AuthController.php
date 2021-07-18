@@ -264,36 +264,16 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
-        $rules = [
-            'email'    => 'email|required',
-            'password' => 'required'
-        ];
-
-        $validator = $this->validator($request, $rules);
-
-        $items = [
-            'email'    => $request->email,
-            'password' => $request->password
-        ];
-
-        $user = $this->user->where('email', $request->email)
+        $user = $this->user->where('cpf', $request->cpf)
                            ->first();
+        
+        $date_convert = Carbon::createFromFormat('d/m/Y', $request->birthdate)->format('Y-m-d');
 
-        if(!$user == null){
-            if($user->adm == 0)
-                return response(['message' => 'User with not access'], 400);
-            else if ($user->active == 0)
-                return response(['message' => 'User Disabled'], 400);
+        if((strtolower($request->mother_name) == strtolower($user->mother_name)) && (strtotime($date_convert) == strtotime($user->birthdate))){
+            $accessToken = $user->createToken('authToken')->accessToken;
+            return response(['user' => $user, 'access_token' => $accessToken], 200);
         } else
-            return response(['message' => 'Invalid User'], 400);
-
-        if (!auth()->attempt($items)) {
-            return response(['message' => 'Invalid Credentials'], 400);
-        }
-
-        $accessToken = auth()->user()->createToken('authToken')->accessToken;
-
-        return response(['user' => auth()->user(), 'access_token' => $accessToken], 200);
+        return response(['message' => 'Invalid Login Access'], 400);
 
     }
 

@@ -46,7 +46,7 @@ Route::prefix('mobile')->group(function () {
 
     Route::prefix('login')->group(function () {
         Route::get('valid', 'App\Http\Controllers\Api\Mobile\AuthController@valid')->name('valid');
-        Route::get('access', 'App\Http\Controllers\Api\Mobile\AuthController@login')->name('access');
+        Route::post('access', 'App\Http\Controllers\Api\Mobile\AuthController@login')->name('access');
     });
 
     Route::middleware(['auth:api'])->group(function () {
