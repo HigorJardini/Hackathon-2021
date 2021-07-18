@@ -56,7 +56,7 @@ class ExportFileService
 
             
             if(!empty($files)){
-                $this->zipImages($denunciation_id, $files);
+                return $this->zipImages($denunciation_id, $files);
             } else
                 return [
                     'http_code' => 400,
