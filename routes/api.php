@@ -18,7 +18,7 @@ Route::prefix('desktop')->group(function () {
 
     Route::post('login', 'App\Http\Controllers\Api\Desktop\AuthController@login')->name('login');
 
-    Route::middleware(['auth:api'])->group(function () {
+    Route::group(function () {
 
         Route::prefix('users')->name('users')->group(function () {
             Route::get('list',      'App\Http\Controllers\Api\Desktop\Users\UsersController@list')->name('.list');
@@ -63,6 +63,8 @@ Route::prefix('mobile')->group(function () {
         });
     });
 });
+
+
 
 Route::fallback(function () {
     return response(['message' => 'Route Not Found'],404);
