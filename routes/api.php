@@ -49,6 +49,8 @@ Route::prefix('mobile')->group(function () {
         Route::post('access', 'App\Http\Controllers\Api\Mobile\AuthController@login')->name('access');
     });
 
+    Route::post('register', 'App\Http\Controllers\Api\Mobile\AuthController@register')->name('register');
+    
     Route::middleware(['auth:api'])->group(function () {
 
     });

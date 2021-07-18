@@ -280,11 +280,10 @@ class AuthController extends Controller
     public function register(Request $request)
     {
         $rules = [
-            'name'     => 'required|max:255',
-            'email'    => 'email|required|unique:users',
-            'cpf'      => 'required|min:11|max:11|unique:users',
-            'password' => 'required|min:6',
-            'chapa'    => 'required'
+            'name'        => 'required|max:255',
+            'cpf'         => 'required|min:11|max:11|unique:users',
+            'mother_name' => 'required|min:1|max:255',
+            'birthdate'   => 'required|min:10|max:10'
         ];
 
         $validator = $this->validator($request, $rules);
@@ -292,22 +291,19 @@ class AuthController extends Controller
         if ($validator->fails()) {
             return response()->json($validator->messages(), 400);
         }
-
-        $by_passwd = bcrypt($request->password);
-
+        
         $user = User::create([
             'name'         => $request->name,
-            'email'        => $request->email,
             'cpf'          => $request->cpf,
-            'password'     => $by_passwd,
-            'chapa_number' => $request->chapa,
+            'mother_name'  => $request->mother_name,
+            'birthdate'    => $request->birthdate,
             'active'       => 1,
-            'adm'          => 1
+            'adm'          => 0
         ]);
 
-        // $accessToken = $user->createToken('authToken')->accessToken;
+        $accessToken = $user->createToken('authToken')->accessToken;
 
-        return response(['message' => 'User created'], 200);
+        return response(['message' => 'User created', 'user' => $user, 'access_token' => $accessToken], 200);
     }
 
     private function validator($request, $rules)
