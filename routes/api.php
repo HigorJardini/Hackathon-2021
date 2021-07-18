@@ -34,6 +34,10 @@ Route::prefix('desktop')->group(function () {
             Route::post('details/update/status/{denunciation_id}/{status_id}', 'App\Http\Controllers\Api\Desktop\Denunciations\DenunciationsController@updateStatus')->name('.details.update.status');
         });
 
+        Route::prefix('dashboard')->name('denunciations')->group(function () {
+            Route::get('home', 'App\Http\Controllers\Api\Desktop\Dashboard\DashboardController@home')->name('.home');
+        });
+
     });
 
 });
