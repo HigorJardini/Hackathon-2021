@@ -55,6 +55,7 @@ Route::prefix('mobile')->group(function () {
         Route::prefix('denunciations')->name('denunciations')->group(function () {
             // Route::get('list', 'App\Http\Controllers\Api\Desktop\Denunciations\DenunciationsController@list')->name('.list');
             Route::post('register', 'App\Http\Controllers\Api\Mobile\Denunciations\DenunciationsController@register')->name('.register');
+            Route::get('list/neighborhoods', 'App\Http\Controllers\Api\Mobile\Denunciations\DenunciationsController@listNeighborhoods')->name('.list.neighborhoods');
         });
     });
 });

@@ -20,7 +20,13 @@ class DenunciationsController extends Controller
 
     public function register(Request $request)
     {   
-        $list = $this->denunciationsService->register($request);
+        $register = $this->denunciationsService->register($request);
+        return response()->json($register['return'], $register['http_code']);
+    }
+
+    public function listNeighborhoods(Request $request)
+    {   
+        $list = $this->denunciationsService->listNeighborhoods($request->city_id);
         return response()->json($list['return'], $list['http_code']);
     }
 }

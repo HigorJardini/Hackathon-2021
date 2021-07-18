@@ -323,4 +323,36 @@ class DenunciationsService
         }
     }
 
+    public function listNeighborhoods($city_id)
+    {
+        try {
+
+            $neighborhoods = $this->neighborhoods->select('id', 'city_id', 'name')
+                                                 ->where('city_id', $city_id)
+                                                 ->get()
+                                                 ->toArray();
+            
+            if($neighborhoods !== null)
+                return [
+                    'http_code' => 200,
+                    'return'   => $neighborhoods
+                ];
+            else   
+                return [
+                    'http_code' => 200,
+                    'return'   => ['message' => "Neighborhoods not found"]
+                ];
+            
+
+        } catch (\Throwable $th) {
+
+            $this->logSystem->log_system_error(500, 'Mobile/DenunciationsService/listNeighborhoods()', $th);
+            
+            return [
+                'http_code' => 500,
+                'return'   => ['message' => 'listNeighborhoods register error']
+            ]; 
+        }
+    }
+
 }
