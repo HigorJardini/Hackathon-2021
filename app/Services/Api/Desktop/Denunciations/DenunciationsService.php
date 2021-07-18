@@ -380,7 +380,7 @@ class DenunciationsService
     private function getDenunciationDownloadCheck($denunciation_id)
     {
         try {
-            $check = $this->denunciations->leftJoin('denunciation_files', 'denunciation_files.denunciation_id', '=', 'denunciations.user_id')
+            $check = $this->denunciations->leftJoin('denunciation_files', 'denunciation_files.denunciation_id', '=', 'denunciations.id')
                                          ->where('denunciation_files.denunciation_id', $denunciation_id)
                                          ->count();
 
