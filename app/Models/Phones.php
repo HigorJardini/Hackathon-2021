@@ -5,16 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class DenunciationsType extends Model
+class Phones extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'name',
-        'active'
+        'number',
     ];
 
     public $timestamps = true;
-
-    protected $table = 'denunciations_type';
+    protected $table = 'phones';
 }

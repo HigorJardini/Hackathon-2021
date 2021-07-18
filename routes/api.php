@@ -52,7 +52,10 @@ Route::prefix('mobile')->group(function () {
     Route::post('register', 'App\Http\Controllers\Api\Mobile\AuthController@register')->name('register');
     
     Route::middleware(['auth:api'])->group(function () {
-
+        Route::prefix('denunciations')->name('denunciations')->group(function () {
+            // Route::get('list', 'App\Http\Controllers\Api\Desktop\Denunciations\DenunciationsController@list')->name('.list');
+            Route::post('register', 'App\Http\Controllers\Api\Mobile\Denunciations\DenunciationsController@register')->name('.register');
+        });
     });
 });
 

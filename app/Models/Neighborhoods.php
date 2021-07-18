@@ -5,16 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class DenunciationsType extends Model
+class Neighborhoods extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'name',
-        'active'
+        'city_id',
+        'name'
     ];
 
     public $timestamps = true;
-
-    protected $table = 'denunciations_type';
+    protected $table = 'neighborhoods';
 }

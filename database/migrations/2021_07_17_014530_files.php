@@ -18,7 +18,7 @@ class Files extends Migration
 
             $table->string('name');
             $table->longText('file_content');
-            $table->text('description');
+            $table->text('description')->nullable();
 
             $table->timestamps();
         });

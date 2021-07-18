@@ -123,10 +123,10 @@ class UsersService
                 }
             }
 
-            if(isset($request->chapa)){
-                if($request->chapa != $user_get->chapa){
-                    $rules['chapa'] = 'min:1';
-                    $update['chapa'] = $request->chapa;
+            if(isset($request->chapa_number)){
+                if($request->chapa_number != $user_get->chapa){
+                    $rules['chapa_number'] = 'min:1';
+                    $update['chapa_number'] = $request->chapa_number;
                 }
             }
 
