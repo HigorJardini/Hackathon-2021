@@ -119,10 +119,10 @@ class ExportFileService
                             $this->deleteFiles($id, $files_list);
 
                             $header = [
-                                'Content-Type: application/zip',
+                                'Content-Type: application/octet-stream',
                                 'Content-Length: '. filesize($public)
                             ];
-
+                            
                             return Response::download($public, $fileName, $header)->deleteFileAfterSend(true);
                         }
                     }
