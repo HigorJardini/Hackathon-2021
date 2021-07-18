@@ -26,7 +26,7 @@ class Denunciations extends Migration
             $table->unsignedBigInteger('denunciations_type_id');
             $table->foreign('denunciations_type_id')->references('id')->on('denunciations_type');
 
-            $table->string('code', 30);
+            $table->string('code', 30)->nullable();
             $table->longText('description');
             $table->boolean('active');
 

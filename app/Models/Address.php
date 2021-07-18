@@ -5,18 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Status extends Model
+class Address extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'denunciations_type_id',
-        'name',
-        'active',
-        'order'
+        'neighborhood_id',
+        'content'
     ];
 
     public $timestamps = true;
-
-    protected $table = 'status';
+    protected $table = 'address';
 }
