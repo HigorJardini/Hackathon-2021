@@ -37,7 +37,7 @@ class DenunciationsService
                                                 ->selectRaw('DATE_FORMAT(denunciations.created_at, "%d/%m/%Y") as day')
                                                 ->selectRaw('DATE_FORMAT(denunciations.created_at, "%H:%i") as hour')
                                                 ->leftJoin('denunciations_type', 'denunciations_type.id', '=', 'denunciations.denunciations_type_id')
-                                                ->where('active', 1)
+                                                ->where('denunciations.active', 1)
                                                 ->get()
                                                 ->toArray();
             foreach($denunciations as $key => $denunciation){
@@ -74,14 +74,14 @@ class DenunciationsService
                                 ->leftJoin('status', 'status.id', '=', 'historical_status.status_id')
                                 ->orderBy('historical_status.id', 'DESC')
                                 ->first();
-            
+                                
             return [
                 'http_code' => 200,
-                'return'    => $status->name
+                'return'    => $status
             ];
 
         } catch (\Throwable $th) {
-
+            
             $this->logSystem->log_system_error(500, 'DenunciationsService/getStatus()', $th);
 
             return [
