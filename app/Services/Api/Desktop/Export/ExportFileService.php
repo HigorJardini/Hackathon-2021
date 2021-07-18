@@ -116,7 +116,7 @@ class ExportFileService
                         
                         if (file_exists($public)) {
 
-                            //$this->deleteFiles($id, $files_list);
+                            $this->deleteFiles($id, $files_list);
 
                             $header = [
                                 'Content-Type: application/octet-stream',

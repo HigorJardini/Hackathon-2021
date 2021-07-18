@@ -18,6 +18,7 @@ Route::prefix('desktop')->group(function () {
 
     Route::post('login', 'App\Http\Controllers\Api\Desktop\AuthController@login')->name('login');
 
+    Route::middleware(['auth:api'])->group(function () {
 
         Route::prefix('users')->name('users')->group(function () {
             Route::get('list',      'App\Http\Controllers\Api\Desktop\Users\UsersController@list')->name('.list');
@@ -41,6 +42,7 @@ Route::prefix('desktop')->group(function () {
             Route::get('file/{denunciation_id}', 'App\Http\Controllers\Api\Desktop\Export\ExportFileController@export')->name('.file');
         });
 
+    });
 
 });
 
