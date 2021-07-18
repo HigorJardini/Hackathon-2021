@@ -24,4 +24,10 @@ class DenunciationsController extends Controller
         return response()->json($list['return'], $list['http_code']);
     }
 
+    public function details(Request $request)
+    {
+        $details = $this->denunciationsService->details($request->denunciation_id);
+        return response()->json($details['return'], $details['http_code']);
+    }
+
 }

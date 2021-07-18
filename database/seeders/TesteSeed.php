@@ -89,5 +89,81 @@ class TesteSeed extends Seeder
             'created_at'             => date('Y-m-d H:i:s'),
             'updated_at'             => date('Y-m-d H:i:s')
         ]);
+
+        DB::table('address')->insert([
+            'neighborhood_id'        => 6,
+            'content'                => json_encode([
+                'zipcode'         => "14406608",
+                'street'          => "Rua Paulo Fernandez Carvalho",
+                'number_house'    => "960",
+                'reference_point' => "Perto de um supermercado"
+            ]),
+            'created_at'             => date('Y-m-d H:i:s'),
+            'updated_at'             => date('Y-m-d H:i:s')
+        ]);
+
+        DB::table('address')->insert([
+            'neighborhood_id'        => 4,
+            'content'                => json_encode([
+                'zipcode'         => "14406333",
+                'street'          => "Rua Antonez Lileu",
+                'number_house'    => "Não Sei",
+                'reference_point' => "em frente a uma escola"
+            ]),
+            'created_at'             => date('Y-m-d H:i:s'),
+            'updated_at'             => date('Y-m-d H:i:s')
+        ]);
+
+        DB::table('address')->insert([
+            'neighborhood_id'        => 2,
+            'content'                => json_encode([
+                'zipcode'         => "14406000",
+                'street'          => "Rua João Carlos",
+                'number_house'    => "145",
+                'reference_point' => "Ao lado do atacadão"
+            ]),
+            'created_at'             => date('Y-m-d H:i:s'),
+            'updated_at'             => date('Y-m-d H:i:s')
+        ]);
+
+        DB::table('denunciation_address')->insert([
+            'address_id'             => 1,
+            'denunciation_id'        => 1000,
+            'created_at'             => date('Y-m-d H:i:s'),
+            'updated_at'             => date('Y-m-d H:i:s')
+        ]);
+
+        DB::table('denunciation_address')->insert([
+            'address_id'             => 2,
+            'denunciation_id'        => 1001,
+            'created_at'             => date('Y-m-d H:i:s'),
+            'updated_at'             => date('Y-m-d H:i:s')
+        ]);
+
+        DB::table('user_address')->insert([
+            'user_id'                => 1,
+            'address_id'             => 3,
+            'active'                 => 1,
+            'created_at'             => date('Y-m-d H:i:s'),
+            'updated_at'             => date('Y-m-d H:i:s')
+        ]);
+
+        DB::table('user_phones')->insert([
+            'user_id'                => 1,
+            'phone_id'               => 1,
+            'order'                  => 2,
+            'active'                 => 1,
+            'created_at'             => date('Y-m-d H:i:s'),
+            'updated_at'             => date('Y-m-d H:i:s')
+        ]);
+
+        DB::table('user_phones')->insert([
+            'user_id'                => 1,
+            'phone_id'               => 2,
+            'order'                  => 1,
+            'active'                 => 1,
+            'created_at'             => date('Y-m-d H:i:s'),
+            'updated_at'             => date('Y-m-d H:i:s')
+        ]);
     }
 }

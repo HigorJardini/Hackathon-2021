@@ -17,6 +17,9 @@ class DatabaseSeeder extends Seeder
             UserAdminSeeder::class,
             DenunciationsType::class,
             StatusSeed::class,
+            StatesSeed::class,
+            CitiesSeed::class,
+            NeighborhoodsSeed::class,
             TesteSeed::class
         ]);
 

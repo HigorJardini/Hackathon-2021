@@ -18,6 +18,8 @@ class States extends Migration
 
             $table->string('name');
             $table->string('uf', 5);
+            $table->string('ibge', 10);
+            $table->boolean('active');
 
             $table->timestamps();
         });
