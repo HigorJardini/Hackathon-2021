@@ -6,6 +6,8 @@ use App\Models\Denunciations;
 use App\Models\DenunciationFiles;
 use App\Models\HistoricalStatus;
 
+use Illuminate\Support\Facades\DB;
+
 use App\Services\Api\LogSystem;
 
 class DenunciationsService
@@ -454,7 +456,7 @@ class DenunciationsService
             ];
 
         } catch (\Throwable $th) {
-            
+
             $this->logSystem->log_system_error(500, 'DenunciationsService/listStatus()', $th);
 
             return [
@@ -486,6 +488,44 @@ class DenunciationsService
                 'http_code' => 500,
                 'return'   => ['message' => 'List denunciations getStatus() error']
             ];
+        }
+    }
+
+    public function updateStatus($denunciation_id, $status_id)
+    {
+        DB::beginTransaction();
+
+        try {
+            $create = $this->historicalStatus->create([
+                                        'user_id'         => Auth()->id(),
+                                        'denunciation_id' => $denunciation_id,
+                                        'status_id'       => $status_id
+                                    ]);
+
+            if($create){
+                DB::commit();
+                return [
+                    'http_code' => 200,
+                    'return'   => ['message' => 'Denunciation Status updated']
+                ];
+            } else {
+                DB::rollBack();
+                return [
+                    'http_code' => 400,
+                    'return'   => ['message' => 'Denunciation Status updated']
+                ];                 
+            }
+
+        } catch (\Throwable $th) {
+
+            DB::rollBack();
+
+            $this->logSystem->log_system_error(500, 'DenunciationsService/updateStatus()', $th);
+            
+            return [
+                'http_code' => 500,
+                'return'   => ['message' => 'Denunciation Status update error']
+            ]; 
         }
     }
 
