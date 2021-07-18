@@ -286,7 +286,8 @@ class DenunciationsService
                 $file_saved = $this->files->create([
                     'name'         => $file_name,
                     'file_content' => base64_encode(file_get_contents($file_item->getRealPath())),
-                    'mime_type'    => $file_item->getMimeType()
+                    'mime_type'    => $file_item->getMimeType(),
+                    'extension'    => $file_item->extension()
                 ]);
 
                 if(!$file_saved)

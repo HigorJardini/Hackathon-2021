@@ -12,7 +12,9 @@ class Files extends Model
     protected $fillable = [
         'name',
         'file_content',
-        'description'
+        'description',
+        'mime_type',
+        'extension'
     ];
 
     public $timestamps = true;

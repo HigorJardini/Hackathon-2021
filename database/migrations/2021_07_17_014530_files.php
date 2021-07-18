@@ -20,6 +20,7 @@ class Files extends Migration
             $table->longText('file_content');
             $table->text('description')->nullable();
             $table->string('mime_type');
+            $table->string('extension', 30);
 
             $table->timestamps();
         });

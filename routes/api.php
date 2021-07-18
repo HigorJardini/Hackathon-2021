@@ -38,6 +38,10 @@ Route::prefix('desktop')->group(function () {
             Route::get('home', 'App\Http\Controllers\Api\Desktop\Dashboard\DashboardController@home')->name('.home');
         });
 
+        Route::prefix('export')->name('export')->group(function () {
+            Route::get('file/{denunciation_id}', 'App\Http\Controllers\Api\Desktop\Export\ExportFileController@export')->name('.file');
+        });
+
     });
 
 });
