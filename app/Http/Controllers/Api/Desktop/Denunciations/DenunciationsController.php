@@ -30,4 +30,10 @@ class DenunciationsController extends Controller
         return response()->json($details['return'], $details['http_code']);
     }
 
+    public function listStatus(Request $request)
+    {
+        $details_lsit_status = $this->denunciationsService->listStatus($request->denunciation_id);
+        return response()->json($details_lsit_status['return'], $details_lsit_status['http_code']);
+    }
+
 }

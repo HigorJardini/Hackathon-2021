@@ -30,6 +30,7 @@ Route::prefix('desktop')->group(function () {
         Route::prefix('denunciations')->name('denunciations')->group(function () {
             Route::get('list', 'App\Http\Controllers\Api\Desktop\Denunciations\DenunciationsController@list')->name('.list');
             Route::get('details/{denunciation_id}', 'App\Http\Controllers\Api\Desktop\Denunciations\DenunciationsController@details')->name('.details');
+            Route::get('details/list/status/{denunciation_id}', 'App\Http\Controllers\Api\Desktop\Denunciations\DenunciationsController@listStatus')->name('.details.list.status');
         });
 
     });

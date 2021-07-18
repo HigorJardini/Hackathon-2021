@@ -408,4 +408,85 @@ class DenunciationsService
         }
     }
 
+    public function listStatus($denunciation_id)
+    {
+        try {
+            
+            $status = $this->denunciations->select(
+                                            'status.id',
+                                            'status.name',
+                                            'status.order',
+                                          )
+                                          ->leftJoin('status', 'status.denunciations_type_id', '=', 'denunciations.denunciations_type_id')
+                                          ->where('denunciations.id', $denunciation_id)
+                                          ->where('status.active', 1)
+                                          ->orderBy('status.order', 'ASC')
+                                          ->get()
+                                          ->toArray();
+
+            $getSelect = $this->getListSelectItem($denunciation_id);
+
+            if($getSelect['http_code'] == 200){
+
+                if(!empty($status)){
+                    foreach($status as $key => $item){
+                        if($item['id'] == $getSelect['return'])
+                            $status[$key]['select'] = true;
+                        else
+                            $status[$key]['select'] = false;
+                    }
+                } else {
+                    return [
+                        'http_code' => 400,
+                        'return'   => ['message' => 'Not found status']
+                    ];
+                }
+
+            } else
+                return [
+                    'http_code' => $getSelect['http_code'],
+                    'return'    => $getSelect['return']
+                ];
+
+            return [
+                'http_code' => 200,
+                'return'    => $status
+            ];
+
+        } catch (\Throwable $th) {
+            
+            $this->logSystem->log_system_error(500, 'DenunciationsService/listStatus()', $th);
+
+            return [
+                'http_code' => 500,
+                'return'   => ['message' => 'List Status denunciations listStatus() error']
+            ];
+        }
+    }
+
+    private function getListSelectItem($denunciation_id)
+    {
+        try {
+            $status = $this->historicalStatus->select('status.id')
+                                             ->where('historical_status.denunciation_id', $denunciation_id)
+                                             ->leftJoin('status', 'status.id', '=', 'historical_status.status_id')
+                                             ->orderBy('historical_status.id', 'DESC')
+                                             ->first();
+            
+            return [
+                'http_code' => 200,
+                'return'    => $status->id
+            ];
+
+        } catch (\Throwable $th) {
+
+            $this->logSystem->log_system_error(500, 'DenunciationsService/getStatus()', $th);
+
+            return [
+                'http_code' => 500,
+                'return'   => ['message' => 'List denunciations getStatus() error']
+            ];
+        }
+    }
+
 }
