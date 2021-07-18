@@ -35,8 +35,8 @@ class UsersController extends Controller
     
     public function editUser(Request $request)
     {
-        if(isset($request->user_id) && isset($request->active)){
-            $update = $this->usersService->situationUser($request->user_id, $request->active);
+        if(isset($request->user_id)){
+            $update = $this->usersService->editUser($request);
             return response()->json($update['return'], $update['http_code']);
         } else 
             return response()->json(['message' => 'User_id or Active is Required'], 400);

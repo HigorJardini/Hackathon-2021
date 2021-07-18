@@ -24,7 +24,7 @@ Route::prefix('desktop')->group(function () {
             Route::get('list',      'App\Http\Controllers\Api\Desktop\Users\UsersController@list')->name('.list');
             Route::post('register', 'App\Http\Controllers\Api\Desktop\AuthController@register')->name('.register');
             Route::put('situation', 'App\Http\Controllers\Api\Desktop\Users\UsersController@situationUser')->name('.situation');
-            Route::put('edit',      'App\Http\Controllers\Api\Desktop\Users\UsersController@editUser')->name('.edit');
+            Route::post('edit',      'App\Http\Controllers\Api\Desktop\Users\UsersController@editUser')->name('.edit');
         });
 
         Route::prefix('denunciations')->name('denunciations')->group(function () {
