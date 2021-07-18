@@ -78,22 +78,22 @@ class ExportFileService
     {
         try {
                     $files_list = $files;
-                    $public_file_path = public_path('storage/denunciations/'. $id);
+                    // $public_file_path = public_path('storage/denunciations/'. $id);
                     
-                    foreach($files as $file)
-                    {
-                        $time_file = new Carbon;
-                        $timer_file = $time_file::now()->format('his_dmY');
-                        if(!file_exists($public_file_path))
-                            mkdir($public_file_path);
+                    // foreach($files as $file)
+                    // {
+                    //     $time_file = new Carbon;
+                    //     $timer_file = $time_file::now()->format('his_dmY');
+                    //     if(!file_exists($public_file_path))
+                    //         mkdir($public_file_path);
 
-                        $file_name = $public_file_path . '/imagem_' . $timer_file . '.' . $file->extension;
-                        file_put_contents($file_name, base64_decode($file->file_content));
+                    //     $file_name = $public_file_path . '/imagem_' . $timer_file . '.' . $file->extension;
+                    //     file_put_contents($file_name, base64_decode($file->file_content));
 
-                    }
+                    // }
                 
-                    if(is_dir($public_file_path)){
-                        $zip = new ZipArchive;
+                    // if(is_dir($public_file_path)){
+                    //     $zip = new ZipArchive;
                
                         $time = new Carbon;
                         $time = $time::now()->format('his_dmY');
@@ -101,31 +101,30 @@ class ExportFileService
             
                         $public = public_path("storage/denunciations/$id/$fileName");
             
-                        if ($zip->open($public, ZipArchive::CREATE) === TRUE)
-                        {
-                            $files = File::files(public_path("storage/denunciations/$id"));
+                        // if ($zip->open($public, ZipArchive::CREATE) === TRUE)
+                        // {
+                        //     $files = File::files(public_path("storage/denunciations/$id"));
                 
-                            foreach ($files as $file) {
-                                $fileBase = basename($file);
-                                $filePath = public_path("storage/denunciations/$id/$fileBase");
-                                $zip->addFile($filePath, $fileBase);
-                            }
+                        //     foreach ($files as $file) {
+                        //         $fileBase = basename($file);
+                        //         $filePath = public_path("storage/denunciations/$id/$fileBase");
+                        //         $zip->addFile($filePath, $fileBase);
+                        //     }
                             
-                            $zip->close();
-                        }
+                        //     $zip->close();
+                        // }
                         
                         if (file_exists($public)) {
 
-                            $this->deleteFiles($id, $files_list);
+                            // $this->deleteFiles($id, $files_list);
 
                             $header = [
-                                'Content-Type: application/octet-stream',
-                                'Content-Length: '. filesize($public)
+                                'Content-Type: application/octet-stream'
                             ];
                             
                             return Response::download($public, $fileName, $header)->deleteFileAfterSend(true);
                         }
-                    }
+                    // }
             
 
         } catch (\Throwable $th) {
