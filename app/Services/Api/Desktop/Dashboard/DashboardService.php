@@ -70,7 +70,7 @@ class DashboardService
                 $dash1_content[$key]['Quantidade'] = 0;
                 foreach($dash1 as $current){
                     if($month == $current->name)
-                        $dash1_content[$key]['Quantidade'] = $current->name;
+                        $dash1_content[$key]['Quantidade'] = (integer) $current->Quantidade;
                 }
             }
 
