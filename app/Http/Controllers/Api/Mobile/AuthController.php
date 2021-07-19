@@ -11,6 +11,8 @@ use App\Models\Address;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
+use Illuminate\Support\Facades\DB;
+
 use Carbon\Carbon;
 
 class AuthController extends Controller
@@ -295,31 +297,110 @@ class AuthController extends Controller
 
     public function register(Request $request)
     {
-        $rules = [
-            'name'        => 'required|max:255',
-            'cpf'         => 'required|min:11|max:11|unique:users',
-            'mother_name' => 'required|min:1|max:255',
-            'birthdate'   => 'required|min:10|max:10'
-        ];
+        DB::beginTransaction();
 
-        $validator = $this->validator($request, $rules);
+        try {
 
-        if ($validator->fails()) {
-            return response()->json($validator->messages(), 400);
+            $rules = [
+                'name'            => 'required|max:255',
+                'cpf'             => 'required|min:11|max:11|unique:users',
+                'mother_name'     => 'required|min:1|max:255',
+                'birthdate'       => 'required|min:10|max:10',
+                'phone'           => 'required|array|min:1',
+                'phone.*'         => 'required|string|min:10',
+                'neighborhood_id' => 'required',
+                'address_content' => 'required'
+            ];
+
+            $validator = $this->validator($request, $rules);
+
+            if ($validator->fails()) {
+                return response()->json($validator->messages(), 400);
+            }
+
+            $user = User::create([
+                'name'         => $request->name,
+                'cpf'          => $request->cpf,
+                'mother_name'  => $request->mother_name,
+                'birthdate'    => $request->birthdate,
+                'active'       => 1,
+                'adm'          => 0
+            ]);
+
+            $address = $this->address->create([
+                'neighborhood_id' => $request->neighborhood_id,
+                'content'         => json_decode($request->address_content) != null ? $request->address_content : null
+            ]);
+            
+            if(!$address){
+
+                DB::rollBack();
+
+                return [
+                    'http_code' => 400,
+                    'return'   => ['message' => 'address error on create']
+                ];
+            }
+
+            $userAddress = $this->userAddress->create([
+                'user_id'         => $user->id,
+                'address_id'      => $address->id,
+                'active'          => 1
+            ]);
+                
+            if(!$userAddress){
+
+                DB::rollBack();
+
+                return [
+                    'http_code' => 400,
+                    'return'   => ['message' => 'user address error on create']
+                ];
+            }
+
+            foreach($request->phone as $phone_n){
+                
+                $phone_n = json_decode($phone_n);    
+
+                $phone = $this->phones->create([
+                    'number' => $phone_n->number
+                ]);
+                
+                $userPhones = $this->userPhones->create([
+                    'user_id'         => $user->id,
+                    'phone_id'        => $phone->id,
+                    'order'           => $phone_n->order,
+                    'active'          => 1
+                ]);
+                    
+                if(!$userPhones){
+    
+                    DB::rollBack();
+    
+                    return [
+                        'http_code' => 400,
+                        'return'   => ['message' => 'user address error on create']
+                    ];
+                }
+            }
+
+            $accessToken = $user->createToken('authToken')->accessToken;
+
+            DB::commit();
+
+            return response(['message' => 'User created', 'user' => $user, 'access_token' => $accessToken], 200);
+
+        } catch (\Throwable $th) {
+            dd($th);
+            DB::rollBack();
+
+            $this->logSystem->log_system_error(500, 'Mobile/DenunciationsService/register()', $th);
+            
+            return [
+                'http_code' => 500,
+                'return'   => ['message' => 'Denunciation Mobile register error']
+            ]; 
         }
-        
-        $user = User::create([
-            'name'         => $request->name,
-            'cpf'          => $request->cpf,
-            'mother_name'  => $request->mother_name,
-            'birthdate'    => $request->birthdate,
-            'active'       => 1,
-            'adm'          => 0
-        ]);
-
-        $accessToken = $user->createToken('authToken')->accessToken;
-
-        return response(['message' => 'User created', 'user' => $user, 'access_token' => $accessToken], 200);
     }
 
     private function validator($request, $rules)
@@ -328,7 +409,8 @@ class AuthController extends Controller
             'required' => 'The :attribute field is required.',
             'min'      => 'The :attribute dont have min the caracters',
             'max'      => 'The :attribute have max the caracters',
-            'unique'   => 'Duplicate :attribute'
+            'unique'   => 'Duplicate :attribute',
+            'array'    => 'Min '
         ]);
 
     }
