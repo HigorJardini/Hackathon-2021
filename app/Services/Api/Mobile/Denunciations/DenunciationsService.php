@@ -356,4 +356,67 @@ class DenunciationsService
         }
     }
 
+    private function getStatus($denunciation_id)
+    {
+        try {
+            $status = $this->historicalStatus->select('status.name')
+                                ->where('historical_status.denunciation_id', $denunciation_id)
+                                ->leftJoin('status', 'status.id', '=', 'historical_status.status_id')
+                                ->orderBy('historical_status.id', 'DESC')
+                                ->first();
+                                
+            return [
+                'http_code' => 200,
+                'return'    => $status
+            ];
+
+        } catch (\Throwable $th) {
+            
+            $this->logSystem->log_system_error(500, 'DenunciationsService/getStatus()', $th);
+
+            return [
+                'http_code' => 500,
+                'return'   => ['message' => 'List denunciations getStatus() error']
+            ];
+        }
+
+    }
+
+    public function list()
+    {
+        try {
+            $denunciations = $this->denunciations->select('denunciations.id', 'denunciations.code', 'denunciations_type.name as type')
+                                                ->selectRaw('DATE_FORMAT(denunciations.created_at, "%d/%m/%Y") as day')
+                                                ->selectRaw('DATE_FORMAT(denunciations.created_at, "%H:%i") as hour')
+                                                ->leftJoin('denunciations_type', 'denunciations_type.id', '=', 'denunciations.denunciations_type_id')
+                                                ->where('denunciations.active', 1)
+                                                ->where('denunciations.user_id', Auth()->id())
+                                                ->get()
+                                                ->toArray();
+            foreach($denunciations as $key => $denunciation){
+
+                $get_status = $this->getStatus($denunciation['id']);
+
+                if($get_status['http_code'] == 200)
+                    $denunciations[$key]['status'] = $get_status['return'];
+                else
+                    return $get_status;
+            }
+            
+            return [
+                'http_code' => 200,
+                'return'   => $denunciations
+            ];
+
+        } catch (\Throwable $th) {
+
+            $this->logSystem->log_system_error(500, 'DenunciationsService/list()', $th);
+            
+            return [
+                'http_code' => 500,
+                'return'   => ['message' => 'List denunciations error']
+            ];
+        }
+    }
+
 }

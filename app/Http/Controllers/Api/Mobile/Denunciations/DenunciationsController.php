@@ -29,4 +29,10 @@ class DenunciationsController extends Controller
         $list = $this->denunciationsService->listNeighborhoods($request->city_id);
         return response()->json($list['return'], $list['http_code']);
     }
+
+    public function list()
+    {   
+        $list = $this->denunciationsService->list();
+        return response()->json($list['return'], $list['http_code']);
+    }
 }
