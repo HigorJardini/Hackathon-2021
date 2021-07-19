@@ -20,7 +20,7 @@ class DatabaseSeeder extends Seeder
             StatesSeed::class,
             CitiesSeed::class,
             NeighborhoodsSeed::class,
-            TesteSeed::class
+            // TesteSeed::class
         ]);
 
     }
