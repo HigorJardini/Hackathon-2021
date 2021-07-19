@@ -4,6 +4,10 @@ namespace App\Http\Controllers\Api\Mobile;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Models\UserPhones;
+use App\Models\UserAddress;
+use App\Models\Phones;
+use App\Models\Address;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -12,12 +16,24 @@ use Carbon\Carbon;
 class AuthController extends Controller
 {
     private $user;
+    private $userPhones;
+    private $userAddress;
+    private $phones;
+    private $address;
 
     public function __construct(
-                                 User $user
+                                 User $user,
+                                 UserPhones $userPhones,
+                                 UserAddress $userAddress,
+                                 Phones $phones,
+                                 Address $address
                                )
     {
         $this->user = $user;
+        $this->userPhones = $userPhones;
+        $this->userAddress = $userAddress;
+        $this->phones = $phones;
+        $this->address = $address;
     }
 
     public function valid(Request $request)
